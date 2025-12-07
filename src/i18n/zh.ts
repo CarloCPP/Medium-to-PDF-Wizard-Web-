@@ -21,6 +21,8 @@ export const zh = {
   addToQueueButton: '添加到队列',
   queueHeader: '队列',
   clearAllButton: '全部清除',
+  clearAllConfirm: '您确定要清除整个列表吗？',
+  removeButton: '移除',
   loadingArticle: '正在加载文章...',
   errorFetching: '获取错误',
   retryButton: '重试',

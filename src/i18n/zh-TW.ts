@@ -21,6 +21,8 @@ export const zhTW = {
   addToQueueButton: '新增至佇列',
   queueHeader: '佇列',
   clearAllButton: '全部清除',
+  clearAllConfirm: '您確定要清除整個列表嗎？',
+  removeButton: '移除',
   loadingArticle: '正在載入文章...',
   errorFetching: '擷取錯誤',
   retryButton: '重試',

@@ -111,12 +111,13 @@ interface ProcessedArticle {
       }
 
       <!-- Sidebar / Input Area -->
-      <aside class="w-full md:w-[400px] bg-white border-r border-slate-200 flex flex-col shadow-lg z-10 transition-all duration-300"
+      <aside class="flex-shrink-0 bg-white border-r border-slate-200 flex flex-col shadow-lg z-10 transition-all duration-300"
+             [style.width.px]="sidebarWidth()"
              [class.hidden]="activeArticle() !== null && isMobile()"
              [class.w-full]="isMobile()">
         
         <!-- Header -->
-        <div class="p-6 border-b border-slate-100 bg-gradient-to-br from-slate-900 to-slate-800 text-white">
+        <div class="p-6 border-b border-slate-100 bg-gradient-to-br from-slate-900 to-slate-800 text-white flex-shrink-0">
           <div class="flex items-center justify-between mb-1">
             <div class="flex items-center gap-3">
               <div class="p-2 bg-white/10 rounded-lg">
@@ -152,60 +153,62 @@ interface ProcessedArticle {
 
         <!-- Input Form -->
         <div class="p-6 flex-1 overflow-y-auto">
-          <div class="mb-6">
-            <label class="block text-sm font-semibold text-slate-700 mb-2">{{ t()('batchUrlsLabel') }}</label>
-            <textarea 
-              [(ngModel)]="urlInput"
-              class="w-full h-24 p-3 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all resize-none bg-slate-50"
-              [placeholder]="t()('batchUrlsPlaceholder')"
-            ></textarea>
-             <button 
-              (click)="processUrls()"
-              [disabled]="!urlInput.trim() || isProcessing()"
-              class="w-full mt-2 py-2 px-4 bg-slate-700 hover:bg-slate-800 disabled:bg-slate-300 text-white font-medium rounded-lg shadow-sm transition-all flex items-center justify-center gap-2 text-sm">
-              @if (isProcessing()) {
-                <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-                {{ t()('processingButton') }}
-              } @else {
-                {{ t()('fetchButton') }}
-              }
+          <div class="border-b border-slate-200 pb-4 mb-4">
+             <button (click)="isBatchInputCollapsed.set(!isBatchInputCollapsed())" class="w-full flex justify-between items-center text-left mb-2">
+              <label class="block text-sm font-semibold text-slate-700">{{ t()('batchUrlsLabel') }}</label>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="transition-transform" [class.rotate-180]="isBatchInputCollapsed()"><polyline points="6 9 12 15 18 9"></polyline></svg>
             </button>
+            @if(!isBatchInputCollapsed()) {
+              <div class="animate-in fade-in">
+                <textarea 
+                  [(ngModel)]="urlInput"
+                  class="w-full h-24 p-3 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all resize-none bg-slate-50"
+                  [placeholder]="t()('batchUrlsPlaceholder')"
+                ></textarea>
+                <button 
+                  (click)="processUrls()"
+                  [disabled]="!urlInput.trim() || isProcessing()"
+                  class="w-full mt-2 py-2 px-4 bg-slate-700 hover:bg-slate-800 disabled:bg-slate-300 text-white font-medium rounded-lg shadow-sm transition-all flex items-center justify-center gap-2 text-sm">
+                  @if (isProcessing()) {
+                    <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                    {{ t()('processingButton') }}
+                  } @else {
+                    {{ t()('fetchButton') }}
+                  }
+                </button>
+              </div>
+            }
           </div>
           
-          <div class="relative my-6">
-            <div class="absolute inset-0 flex items-center" aria-hidden="true">
-              <div class="w-full border-t border-slate-200"></div>
-            </div>
-            <div class="relative flex justify-center">
-              <span class="bg-white px-2 text-sm text-slate-500">{{ t()('orSeparator') }}</span>
-            </div>
+          <div class="border-b border-slate-200 pb-4 mb-4">
+            <button (click)="isSingleInputCollapsed.set(!isSingleInputCollapsed())" class="w-full flex justify-between items-center text-left mb-2">
+              <label class="block text-sm font-semibold text-slate-700">{{ t()('singleUrlLabel') }}</label>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="transition-transform" [class.rotate-180]="isSingleInputCollapsed()"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </button>
+            @if(!isSingleInputCollapsed()) {
+              <div class="flex gap-2 animate-in fade-in">
+                <input 
+                    type="text"
+                    [(ngModel)]="singleUrlInput"
+                    (keydown.enter)="addSingleUrl()"
+                    class="flex-grow p-3 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all bg-slate-50"
+                    [placeholder]="t()('singleUrlPlaceholder')"
+                >
+                <button
+                    (click)="addSingleUrl()"
+                    [disabled]="!singleUrlInput.trim()"
+                    class="px-3 bg-indigo-600 hover:bg-indigo-700 disabled:bg-slate-300 text-white font-medium rounded-lg shadow-sm hover:shadow-md transition-all flex items-center justify-center shrink-0"
+                    [title]="t()('addToQueueButton')"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                </button>
+              </div>
+            }
           </div>
-
-          <div>
-            <label class="block text-sm font-semibold text-slate-700 mb-2">{{ t()('singleUrlLabel') }}</label>
-            <div class="flex gap-2">
-              <input 
-                  type="text"
-                  [(ngModel)]="singleUrlInput"
-                  (keydown.enter)="addSingleUrl()"
-                  class="flex-grow p-3 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all bg-slate-50"
-                  [placeholder]="t()('singleUrlPlaceholder')"
-              >
-              <button
-                  (click)="addSingleUrl()"
-                  [disabled]="!singleUrlInput.trim()"
-                  class="px-3 bg-indigo-600 hover:bg-indigo-700 disabled:bg-slate-300 text-white font-medium rounded-lg shadow-sm hover:shadow-md transition-all flex items-center justify-center shrink-0"
-                  [title]="t()('addToQueueButton')"
-              >
-                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-              </button>
-            </div>
-          </div>
-
 
           <!-- Article List -->
           @if (articles().length > 0) {
-            <div class="mt-8">
+            <div class="mt-4">
               <div class="flex items-center justify-between mb-3">
                 <h3 class="text-sm font-bold text-slate-800 uppercase tracking-wider">{{ t()('queueHeader') }}</h3>
                 <button (click)="clearAll()" class="text-xs text-red-500 hover:underline">{{ t()('clearAllButton') }}</button>
@@ -214,9 +217,16 @@ interface ProcessedArticle {
               <div class="space-y-3">
                 @for (article of articles(); track article.id) {
                   <div 
+                    draggable="true"
+                    (dragstart)="onDragStart($event, article)"
+                    (dragover)="onDragOver($event, article)"
+                    (dragleave)="onDragLeave($event)"
+                    (drop)="onDrop($event, article)"
+                    (dragend)="onDragEnd()"
                     (click)="viewArticle(article)"
                     class="group p-3 rounded-lg border cursor-pointer transition-all relative overflow-hidden"
-                    [class]="getCardClass(article)">
+                    [class]="getCardClass(article)"
+                    [class.opacity-50]="draggedArticleId() === article.id">
                     
                     <div class="flex items-start justify-between gap-3">
                       <div class="flex-1 min-w-0">
@@ -226,7 +236,13 @@ interface ProcessedArticle {
                         <p class="text-xs text-slate-500 mt-1 truncate">{{ article.originalUrl }}</p>
                       </div>
                       
-                      <div class="shrink-0 flex items-center">
+                      <div class="shrink-0 flex items-center gap-2">
+                         <button 
+                            (click)="removeArticle(article, $event)" 
+                            class="p-1 rounded-full text-slate-400 opacity-0 group-hover:opacity-100 hover:bg-red-100 hover:text-red-600 transition-opacity"
+                            [title]="t()('removeButton')">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                         </button>
                         @if (article.status === 'loading') {
                           <div class="animate-spin h-4 w-4 border-2 border-indigo-600 border-t-transparent rounded-full"></div>
                         }
@@ -256,7 +272,7 @@ interface ProcessedArticle {
           }
         </div>
         <!-- API Key status footer -->
-        <div class="p-4 border-t border-slate-100 bg-slate-50 mt-auto">
+        <div class="p-4 border-t border-slate-100 bg-slate-50 flex-shrink-0">
             @if (!apiKey()) {
                 <div class="p-3 bg-amber-100 border border-amber-200 text-amber-800 rounded-lg text-sm">
                     <div class="flex items-start gap-2">
@@ -275,6 +291,11 @@ interface ProcessedArticle {
             }
         </div>
       </aside>
+
+      <!-- Resizer Handle -->
+      <div class="w-1.5 flex-shrink-0 cursor-col-resize bg-slate-200 hover:bg-indigo-400 transition-colors duration-200"
+           (mousedown)="startResize($event)">
+      </div>
 
       <!-- Main Preview Area -->
       <main class="flex-1 h-full bg-slate-200 overflow-hidden relative">
@@ -321,40 +342,72 @@ interface ProcessedArticle {
 export class AppComponent {
   private contentFetcher = inject(ContentFetcherService);
   private translationService = inject(TranslationService);
-  private readonly STORAGE_KEY = 'gemini-api-key';
+  private readonly API_KEY_STORAGE_KEY = 'gemini-api-key';
+  private readonly SIDEBAR_WIDTH_KEY = 'sidebar-width';
   
   t = this.translationService.t;
 
+  // Input state
   urlInput = '';
   singleUrlInput = '';
   isProcessing = signal(false);
+
+  // Article state
   articles = signal<ProcessedArticle[]>([]);
   activeArticle = signal<ProcessedArticle | null>(null);
 
-  // API Key management
-  apiKey = signal<string | null>(this.loadKeyFromStorage());
+  // UI State
   showSettings = signal(false);
-  apiKeyInput = signal('');
   showLangDropdown = signal(false);
   showTutorial = signal(false);
+  isBatchInputCollapsed = signal(false);
+  isSingleInputCollapsed = signal(false);
+  sidebarWidth = signal<number>(this.loadSidebarWidth());
+  draggedArticleId = signal<string | null>(null);
+
+  // API Key management
+  apiKey = signal<string | null>(this.loadKeyFromStorage());
+  apiKeyInput = signal('');
+
+  // Resizing logic
+  private isResizing = false;
+  private initialResizeX = 0;
+  private initialSidebarWidth = 0;
 
   constructor() {
+    // Persist API key to local storage
     effect(() => {
       const key = this.apiKey();
       if (typeof localStorage === 'undefined') return;
       if (key) {
-        localStorage.setItem(this.STORAGE_KEY, key);
+        localStorage.setItem(this.API_KEY_STORAGE_KEY, key);
       } else {
-        localStorage.removeItem(this.STORAGE_KEY);
+        localStorage.removeItem(this.API_KEY_STORAGE_KEY);
       }
+    });
+
+    // Persist sidebar width to local storage
+    effect(() => {
+        const width = this.sidebarWidth();
+        if (typeof localStorage !== 'undefined') {
+            localStorage.setItem(this.SIDEBAR_WIDTH_KEY, String(width));
+        }
     });
   }
   
   private loadKeyFromStorage(): string | null {
     if (typeof localStorage !== 'undefined') {
-        return localStorage.getItem(this.STORAGE_KEY);
+        return localStorage.getItem(this.API_KEY_STORAGE_KEY);
     }
     return null;
+  }
+
+  private loadSidebarWidth(): number {
+    if (typeof localStorage !== 'undefined') {
+      const storedWidth = localStorage.getItem(this.SIDEBAR_WIDTH_KEY);
+      return storedWidth ? parseInt(storedWidth, 10) : 400;
+    }
+    return 400;
   }
 
   isMobile() {
@@ -404,7 +457,7 @@ export class AppComponent {
     const urls = this.urlInput
       .split('\n')
       .map(u => u.trim())
-      .filter(u => u.length > 0);
+      .filter(u => u.length > 0 && u.startsWith('http'));
 
     if (urls.length === 0) return;
 
@@ -421,6 +474,7 @@ export class AppComponent {
     this.articles.update(prev => [...newArticles, ...prev]);
     this.urlInput = '';
 
+    // Fetch sequentially to avoid rate-limiting issues
     for (const article of newArticles) {
       await this.fetchArticleContent(article);
     }
@@ -465,6 +519,14 @@ export class AppComponent {
   viewArticle(article: ProcessedArticle) {
     this.activeArticle.set(article);
   }
+  
+  removeArticle(articleToRemove: ProcessedArticle, event: MouseEvent) {
+      event.stopPropagation();
+      this.articles.update(list => list.filter(a => a.id !== articleToRemove.id));
+      if (this.activeArticle()?.id === articleToRemove.id) {
+          this.activeArticle.set(null);
+      }
+  }
 
   closePreview() {
     this.activeArticle.set(null);
@@ -476,9 +538,79 @@ export class AppComponent {
   }
 
   clearAll() {
-    if (confirm('Are you sure you want to clear the list?')) {
+    if (confirm(this.t()('clearAllConfirm'))) {
       this.articles.set([]);
       this.activeArticle.set(null);
     }
+  }
+
+  // Resizing methods
+  startResize(event: MouseEvent) {
+    this.isResizing = true;
+    this.initialResizeX = event.clientX;
+    this.initialSidebarWidth = this.sidebarWidth();
+    event.preventDefault(); // Prevent text selection
+
+    const doResize = (e: MouseEvent) => this.doResize(e);
+    const stopResize = () => {
+      this.isResizing = false;
+      document.removeEventListener('mousemove', doResize);
+      document.removeEventListener('mouseup', stopResize);
+    };
+
+    document.addEventListener('mousemove', doResize);
+    document.addEventListener('mouseup', stopResize);
+  }
+
+  private doResize(event: MouseEvent) {
+    if (!this.isResizing) return;
+    const dx = event.clientX - this.initialResizeX;
+    const newWidth = this.initialSidebarWidth + dx;
+    // Set constraints for width
+    this.sidebarWidth.set(Math.max(320, Math.min(newWidth, 800)));
+  }
+
+  // Drag-and-drop methods
+  onDragStart(event: DragEvent, article: ProcessedArticle) {
+    this.draggedArticleId.set(article.id);
+    if (event.dataTransfer) {
+      event.dataTransfer.effectAllowed = 'move';
+    }
+  }
+
+  onDragOver(event: DragEvent, targetArticle: ProcessedArticle) {
+    event.preventDefault();
+    const draggedId = this.draggedArticleId();
+    if (draggedId && draggedId !== targetArticle.id) {
+      (event.currentTarget as HTMLElement).classList.add('drag-over-target');
+    }
+  }
+  
+  onDragLeave(event: DragEvent) {
+     (event.currentTarget as HTMLElement).classList.remove('drag-over-target');
+  }
+
+  onDrop(event: DragEvent, targetArticle: ProcessedArticle) {
+    event.preventDefault();
+    (event.currentTarget as HTMLElement).classList.remove('drag-over-target');
+    const draggedId = this.draggedArticleId();
+    if (!draggedId || draggedId === targetArticle.id) return;
+    
+    this.articles.update(currentArticles => {
+      const draggedIndex = currentArticles.findIndex(a => a.id === draggedId);
+      const targetIndex = currentArticles.findIndex(a => a.id === targetArticle.id);
+
+      if (draggedIndex === -1 || targetIndex === -1) return currentArticles;
+      
+      const newList = [...currentArticles];
+      const [removed] = newList.splice(draggedIndex, 1);
+      newList.splice(targetIndex, 0, removed);
+      return newList;
+    });
+    this.draggedArticleId.set(null);
+  }
+  
+  onDragEnd() {
+    this.draggedArticleId.set(null);
   }
 }

@@ -21,6 +21,8 @@ export const ja = {
   addToQueueButton: 'キューに追加',
   queueHeader: 'キュー',
   clearAllButton: 'すべてクリア',
+  clearAllConfirm: '本当にリスト全体をクリアしますか？',
+  removeButton: '削除',
   loadingArticle: '記事を読み込み中...',
   errorFetching: '取得エラー',
   retryButton: '再試行',

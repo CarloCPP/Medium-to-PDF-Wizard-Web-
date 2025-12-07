@@ -21,6 +21,8 @@ export const en = {
   addToQueueButton: 'Add to Queue',
   queueHeader: 'Queue',
   clearAllButton: 'Clear All',
+  clearAllConfirm: 'Are you sure you want to clear the entire list?',
+  removeButton: 'Remove',
   loadingArticle: 'Loading Article...',
   errorFetching: 'Error Fetching',
   retryButton: 'Retry',
