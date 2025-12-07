@@ -13,12 +13,23 @@ export class ContentFetcherService {
   convertUrl(url: string): string {
     try {
       const urlObj = new URL(url);
-      if (urlObj.hostname.includes('medium.com')) {
+      const hostname = urlObj.hostname;
+
+      // If it's already a scribe.rip URL, no conversion needed.
+      if (hostname === 'scribe.rip') {
+        return url;
+      }
+
+      // If it's a medium.com URL (or a subdomain), convert it.
+      if (hostname.endsWith('medium.com')) {
         urlObj.hostname = 'scribe.rip';
         return urlObj.toString();
       }
+
+      // Return other URLs as is.
       return url;
     } catch (e) {
+      // If URL parsing fails, return the original string.
       return url;
     }
   }
