@@ -34,6 +34,13 @@ export const ja = {
   fetchingContent: 'Scribe.ripからコンテンツを取得中...',
   fetchFailedTitle: 'おっと！取得に失敗しました',
   goBackButton: '戻る',
+  tutorial: 'チュートリアル',
+  tutorialTitle: 'ウィザードの使い方',
+  tutorialStep1: 'テキストボックスに1つ以上のMedium記事のURLを貼り付けます。',
+  tutorialStep2: 'キュー内の記事をクリックしてプレビューします。「コンテンツを編集」を押して、不要な要素をクリックして削除します。',
+  tutorialStep3: 'Gemini搭載のボタンを使用して、AI要約を生成したり、コンテンツを翻訳したりします（任意）。',
+  tutorialStep4: '結果に満足したら、「PDFをダウンロード」をクリックして、クリーンアップされた記事を保存します。',
+  gotItButton: 'わかりました！',
 
   // Article Preview Component
   untitledArticle: '無題の記事',

@@ -34,6 +34,13 @@ export const zhTW = {
   fetchingContent: '正在從 Scribe.rip 擷取內容...',
   fetchFailedTitle: '糟糕！擷取失敗',
   goBackButton: '返回',
+  tutorial: '教學',
+  tutorialTitle: '如何使用精靈',
+  tutorialStep1: '將一篇或多篇 Medium 文章網址貼到文字方塊中。',
+  tutorialStep2: '點擊佇列中的文章進行預覽。按下「編輯內容」即可透過點擊移除任何不需要的元素。',
+  tutorialStep3: '使用由 Gemini 驅動的按鈕生成 AI 摘要或翻譯內容（可選）。',
+  tutorialStep4: '對結果滿意後，點擊「下載 PDF」儲存清理後的文章。',
+  gotItButton: '了解！',
   
   // Article Preview Component
   untitledArticle: '無標題文章',

@@ -49,6 +49,67 @@ interface ProcessedArticle {
         </div>
       }
 
+      <!-- Tutorial Modal -->
+      @if(showTutorial()) {
+        <div class="absolute inset-0 bg-black/60 z-50 flex items-center justify-center animate-in fade-in" (click)="showTutorial.set(false)">
+          <div class="bg-white rounded-lg shadow-xl w-full max-w-2xl m-4" (click)="$event.stopPropagation()">
+            <div class="p-6 border-b flex justify-between items-center">
+              <h2 class="text-lg font-bold text-slate-800">{{ t()('tutorialTitle') }}</h2>
+              <button (click)="showTutorial.set(false)" class="p-2 rounded-full hover:bg-slate-100 text-slate-400">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+              </button>
+            </div>
+            <div class="p-6 max-h-[70vh] overflow-y-auto">
+              <div class="bg-slate-100 rounded-lg border border-slate-200 p-4 mb-6 flex justify-center">
+                <svg width="400" height="200" viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="10" y="10" width="150" height="180" rx="5" fill="#f1f5f9"/>
+                  <rect x="180" y="10" width="210" height="180" rx="5" fill="#e2e8f0"/>
+                  <text x="15" y="30" font-family="monospace" font-size="10" fill="#475569">URL Input</text>
+                  <text x="185" y="30" font-family="sans-serif" font-size="10" fill="#475569">Preview</text>
+
+                  <path d="M100 100 L100 115 L103 112 L106 115 Z" fill="#334155" opacity="0">
+                    <animate attributeName="opacity" values="0;1;1;0;0;0;0;0" dur="8s" repeatCount="indefinite" />
+                    <animateMotion path="M-60,35 L40,35 L40,110 L150,110 L150,80 L250,80 L250,150 L320,150 L-60,35" dur="8s" repeatCount="indefinite" />
+                  </path>
+                  
+                  <text x="15" y="50" font-family="monospace" font-size="9" fill="#64748b" opacity="0">
+                    medium.com/...
+                    <animate attributeName="opacity" values="0;1;1;1;1;1;1;1" begin="0s" dur="8s" repeatCount="indefinite" />
+                  </text>
+                  
+                  <g id="preview_content">
+                    <rect x="190" y="40" width="190" height="20" rx="2" fill="#cbd5e1"/>
+                    <rect x="190" y="70" width="150" height="10" rx="2" fill="#cbd5e1"/>
+                    <rect id="removable_element" x="190" y="90" width="170" height="30" rx="2" fill="#cbd5e1"/>
+                    <animate attributeName="opacity" values="0;0;1;1;1;1;1;1" begin="0s" dur="8s" repeatCount="indefinite" />
+                  </g>
+                  
+                  <animateTransform attributeName="transform" type="scale" from="1" to="0.9" begin="4s" dur="0.5s" fill="freeze" additive="sum" repeatCount="1" restart="whenNotActive" xlink:href="#removable_element" />
+                  <animate attributeName="opacity" begin="4s" dur="0.5s" values="1;0" fill="freeze" restart="whenNotActive" xlink:href="#removable_element" />
+
+                  <g opacity="0">
+                    <rect x="290" y="150" width="30" height="30" rx="3" fill="#1e293b"/>
+                    <path d="M305 158 v 10 M302 165 l3 3 l3 -3" stroke="white" stroke-width="2"/>
+                    <animate attributeName="opacity" values="0;0;0;0;0;0;1;0" begin="0s" dur="8s" repeatCount="indefinite" />
+                  </g>
+                </svg>
+              </div>
+              
+              <ol class="list-decimal list-inside space-y-4 text-slate-700">
+                <li>{{ t()('tutorialStep1') }}</li>
+                <li>{{ t()('tutorialStep2') }}</li>
+                <li>{{ t()('tutorialStep3') }}</li>
+                <li>{{ t()('tutorialStep4') }}</li>
+              </ol>
+
+            </div>
+            <div class="p-4 bg-slate-50 border-t flex justify-end">
+              <button (click)="showTutorial.set(false)" class="px-6 py-2 bg-indigo-600 text-white rounded-md text-sm font-medium hover:bg-indigo-700">{{ t()('gotItButton') }}</button>
+            </div>
+          </div>
+        </div>
+      }
+
       <!-- Sidebar / Input Area -->
       <aside class="w-full md:w-[400px] bg-white border-r border-slate-200 flex flex-col shadow-lg z-10 transition-all duration-300"
              [class.hidden]="activeArticle() !== null && isMobile()"
@@ -80,6 +141,9 @@ interface ProcessedArticle {
               </div>
               <button (click)="openSettings()" [title]="t()('settings')" class="p-2 rounded-full text-slate-300 hover:bg-white/10 transition-colors">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V15a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51-1z"></path></svg>
+              </button>
+               <button (click)="showTutorial.set(true)" [title]="t()('tutorial')" class="p-2 rounded-full text-slate-300 hover:bg-white/10 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
               </button>
             </div>
           </div>
@@ -272,6 +336,7 @@ export class AppComponent {
   showSettings = signal(false);
   apiKeyInput = signal('');
   showLangDropdown = signal(false);
+  showTutorial = signal(false);
 
   constructor() {
     effect(() => {

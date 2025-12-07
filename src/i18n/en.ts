@@ -34,7 +34,14 @@ export const en = {
   fetchingContent: 'Fetching content from Scribe.rip...',
   fetchFailedTitle: 'Oops! Fetch Failed',
   goBackButton: 'Go Back',
-  
+  tutorial: 'Tutorial',
+  tutorialTitle: 'How to Use the Wizard',
+  tutorialStep1: 'Paste one or more Medium article URLs into the text boxes.',
+  tutorialStep2: "Click an article in the queue to preview it. Press 'Edit Content' to remove any unwanted elements by clicking on them.",
+  tutorialStep3: 'Use the Gemini-powered buttons to generate an AI summary or translate the content (optional).',
+  tutorialStep4: "Once you're happy with the result, click 'Download PDF' to save the clean article.",
+  gotItButton: 'Got It!',
+
   // Article Preview Component
   untitledArticle: 'Untitled Article',
   editModeOn: 'Edit Mode: ON',

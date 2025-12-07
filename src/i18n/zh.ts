@@ -34,6 +34,13 @@ export const zh = {
   fetchingContent: '正在从 Scribe.rip 获取内容...',
   fetchFailedTitle: '哎呀！获取失败',
   goBackButton: '返回',
+  tutorial: '教程',
+  tutorialTitle: '如何使用向导',
+  tutorialStep1: '将一个或多个 Medium 文章 URL 粘贴到文本框中。',
+  tutorialStep2: '点击队列中的文章进行预览。按“编辑内容”通过点击删除任何不需要的元素。',
+  tutorialStep3: '使用由 Gemini 驱动的按钮生成 AI 摘要或翻译内容（可选）。',
+  tutorialStep4: '对结果满意后，点击“下载 PDF”保存清理后的文章。',
+  gotItButton: '明白了！',
 
   // Article Preview Component
   untitledArticle: '无标题文章',
