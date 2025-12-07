@@ -436,16 +436,12 @@ export class AppComponent {
     }
 
     try {
-      const content = await this.contentFetcher.fetchArticleHtml(article.originalUrl);
+      const { title, content } = await this.contentFetcher.fetchArticleData(article.originalUrl);
       
-      const tempDiv = document.createElement('div');
-      tempDiv.innerHTML = content;
-      const title = tempDiv.querySelector('h1')?.innerText || this.t()('untitledArticle');
-
       this.updateArticleStatus(article.id, {
         status: 'success',
         htmlContent: content,
-        title: title.substring(0, 100)
+        title: title.substring(0, 100) || this.t()('untitledArticle')
       });
     } catch (e: any) {
       this.updateArticleStatus(article.id, {
